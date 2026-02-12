@@ -1,7 +1,8 @@
 const axios = require('axios');
+const { authServiceUrl } = require('./config');
 
 const authClient = axios.create({
-  baseURL: process.env.AUTH_SERVICE_URL,
+  baseURL: authServiceUrl,
   timeout: 3000
 });
 

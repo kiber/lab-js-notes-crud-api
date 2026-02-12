@@ -1,14 +1,12 @@
-require('dotenv').config();
 const app = require('./src/app');
 const connectDB = require('./src/config/db');
-
-const PORT = process.env.PORT || 5001;
+const { port } = require('./src/config/config');
 
 const startServer = async () => {
   try {
     await connectDB();
-    app.listen(PORT, () => {
-      console.log(`Notes Service running on port ${PORT}`);
+    app.listen(port, () => {
+      console.log(`Notes Service running on port ${port}`);
     });
   } catch (error) {
     console.error('Failed to start server:', error.message);
