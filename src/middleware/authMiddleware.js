@@ -1,11 +1,15 @@
 const authClient = require('../config/axios');
+const { sendError } = require('../utils/response');
 
 const authMiddleware = async (req, res, next) => {
   try {
     const authHeader = req.headers.authorization;
 
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
-      return res.status(401).json({ message: 'Unauthorized: No token provided' });
+      return sendError(res, {
+        statusCode: 401,
+        message: 'Unauthorized: No token provided'
+      });
     }
 
     const token = authHeader.split(' ')[1];
@@ -22,7 +26,10 @@ const authMiddleware = async (req, res, next) => {
     );
 
     if (!response.data.data.valid) {
-      return res.status(401).json({ message: 'Unauthorized: Invalid token' });
+      return sendError(res, {
+        statusCode: 401,
+        message: 'Unauthorized: Invalid token'
+      });
     }
 
     // Attach userId to request
@@ -32,7 +39,10 @@ const authMiddleware = async (req, res, next) => {
 
   } catch (error) {
     console.error('Auth Middleware Error:', error.message);
-    return res.status(401).json({ message: 'Unauthorized' });
+    return sendError(res, {
+      statusCode: 401,
+      message: 'Unauthorized'
+    });
   }
 };
 
