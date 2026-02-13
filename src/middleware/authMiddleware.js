@@ -1,5 +1,6 @@
 const authClient = require('../config/axios');
 const { sendError } = require('../utils/response');
+const logger = require('../config/logger');
 
 const authMiddleware = async (req, res, next) => {
   try {
@@ -36,9 +37,11 @@ const authMiddleware = async (req, res, next) => {
     req.userId = response.data.data.userId;
 
     next();
-
   } catch (error) {
-    console.error('Auth Middleware Error:', error.message);
+    logger.warn('Auth middleware verification failed', {
+      error: error.message,
+      path: req.originalUrl
+    });
     return sendError(res, {
       statusCode: 401,
       message: 'Unauthorized'

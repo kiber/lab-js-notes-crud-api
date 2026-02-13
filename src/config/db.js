@@ -1,12 +1,13 @@
 const mongoose = require('mongoose');
-const { mongoUri } = require('./config');
+const { mongoUri } = require('./app.config');
+const logger = require('./logger');
 
 const connectDB = async () => {
   try {
     await mongoose.connect(mongoUri);
-    console.log('MongoDB connected (Notes Service)');
+    logger.info('MongoDB connected', { service: 'notes-service' });
   } catch (error) {
-    console.error('MongoDB connection failed:', error.message);
+    logger.error('MongoDB connection failed', { error: error.message });
     process.exit(1);
   }
 };
