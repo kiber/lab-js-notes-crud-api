@@ -6,10 +6,18 @@ const noteRoutes = require('./routes/noteRoutes');
 const { sendSuccess, sendError } = require('./utils/response');
 const logger = require('./config/logger');
 const httpLogger = require('./middleware/httpLogger');
+const { corsOrigin } = require('./config/app.config');
 
 const app = express();
 
-app.use(cors());
+app.use(
+  cors({
+    origin: corsOrigin,
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: true
+  })
+);
 app.use(helmet());
 app.use(httpLogger);
 app.use(express.json());
