@@ -6,7 +6,7 @@ const noteRoutes = require('./routes/noteRoutes');
 const { sendSuccess, sendError } = require('./utils/response');
 const logger = require('./config/logger');
 const httpLogger = require('./middleware/httpLogger');
-const { corsOrigin } = require('./config/app.config');
+const { corsOrigin, apiBasePath } = require('./config/app.config');
 
 const app = express();
 
@@ -32,7 +32,7 @@ app.get('/health', (req, res) => {
   });
 });
 
-app.use('/api/notes', noteRoutes);
+app.use(`${apiBasePath}/notes`, noteRoutes);
 
 app.use((req, res) => {
   return sendError(res, {
